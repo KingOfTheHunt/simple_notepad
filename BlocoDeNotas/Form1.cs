@@ -21,9 +21,18 @@ namespace BlocoDeNotas
                 arquivo.Conteudo = rtxtConteudo.Text;
                 if (!arquivo.Salvo)
                 {
-                    saveFileDialog.ShowDialog();
-                    arquivo.Caminho = saveFileDialog.FileName;
-                    ServicoArquivo.Escrever(arquivo);
+                    DialogResult decisao = saveFileDialog.ShowDialog();
+                    if (decisao == DialogResult.OK)
+                    {
+                        arquivo.Caminho = saveFileDialog.FileName;
+                        ServicoArquivo.Escrever(arquivo);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Operação cancelada!", "Aviso",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
                 }
                 else
                 {
@@ -42,11 +51,19 @@ namespace BlocoDeNotas
         {
             try
             {
-                saveFileDialog.ShowDialog();
-                arquivo.Caminho = saveFileDialog.FileName;
-                ServicoArquivo.Escrever(arquivo);
-                MessageBox.Show("Salvo com sucesso!", "Sucesso",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DialogResult decisao = saveFileDialog.ShowDialog();
+                if (decisao == DialogResult.OK)
+                {
+                    arquivo.Caminho = saveFileDialog.FileName;
+                    ServicoArquivo.Escrever(arquivo);
+                    MessageBox.Show("Salvo com sucesso!", "Sucesso",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Operação cancelada!", "Aviso", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch (Exception ex)
             {
@@ -58,9 +75,12 @@ namespace BlocoDeNotas
         {
             try
             {
-                openFileDialog.ShowDialog();
-                arquivo.Caminho = openFileDialog.FileName;
-                rtxtConteudo.Text = ServicoArquivo.Ler(arquivo);
+                DialogResult decisao = openFileDialog.ShowDialog();
+                if (decisao == DialogResult.OK)
+                {
+                    arquivo.Caminho = openFileDialog.FileName;
+                    rtxtConteudo.Text = ServicoArquivo.Ler(arquivo);
+                }
             }
             catch (Exception ex)
             {
